@@ -1,3 +1,6 @@
+// Copyright The OpenTelemetry Authors
+// SPDX-License-Identifier: Apache-2.0
+
 package hiveauthextension // import "github.com/graphql-hive/opentelemetry-collector-contrib/extension/hiveauthextension"
 
 import (

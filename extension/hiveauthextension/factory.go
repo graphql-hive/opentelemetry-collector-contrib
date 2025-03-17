@@ -13,10 +13,6 @@ import (
 	"github.com/graphql-hive/opentelemetry-collector-contrib/extension/hiveauthextension/internal/metadata"
 )
 
-const (
-	defaultScheme = "Bearer"
-)
-
 // NewFactory creates a factory for the static bearer token Authenticator extension.
 func NewFactory() extension.Factory {
 	return extension.NewFactory(
@@ -34,6 +30,6 @@ func createDefaultConfig() component.Config {
 	}
 }
 
-func createExtension(ctx context.Context, params extension.Settings, cfg component.Config) (extension.Extension, error) {
+func createExtension(_ context.Context, params extension.Settings, cfg component.Config) (extension.Extension, error) {
 	return newHiveAuthExtension(params.Logger, cfg.(*Config))
 }

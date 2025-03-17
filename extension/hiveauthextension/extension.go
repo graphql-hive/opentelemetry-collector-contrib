@@ -1,3 +1,6 @@
+// Copyright The OpenTelemetry Authors
+// SPDX-License-Identifier: Apache-2.0
+
 package hiveauthextension
 
 import (
@@ -25,12 +28,12 @@ type hiveAuthExtension struct {
 	cache  *cache.Cache
 }
 
-func (h *hiveAuthExtension) Start(ctx context.Context, host component.Host) error {
+func (h *hiveAuthExtension) Start(_ context.Context, _ component.Host) error {
 	h.logger.Info("Starting hive auth extension", zap.String("endpoint", h.config.Endpoint), zap.Duration("timeout", h.config.Timeout))
 	return nil
 }
 
-func (h *hiveAuthExtension) Shutdown(ctx context.Context) error {
+func (h *hiveAuthExtension) Shutdown(_ context.Context) error {
 	h.logger.Info("Shutting down hive auth extension")
 	return nil
 }
@@ -77,7 +80,7 @@ type authResult struct {
 }
 
 func (h *hiveAuthExtension) doAuthRequest(ctx context.Context, auth string) error {
-	req, err := http.NewRequestWithContext(ctx, "GET", h.config.Endpoint, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, h.config.Endpoint, nil)
 	if err != nil {
 		h.logger.Error("failed to create auth request", zap.Error(err))
 		return err
@@ -148,7 +151,7 @@ func (h *hiveAuthExtension) Authenticate(ctx context.Context, headers map[string
 	}
 
 	// Deduplicate concurrent calls.
-	_, err, _ := h.group.Do(auth, func() (interface{}, error) {
+	_, err, _ := h.group.Do(auth, func() (any, error) {
 		// Call the externalized HTTP request function.
 		return nil, h.doAuthRequest(ctx, auth)
 	})
