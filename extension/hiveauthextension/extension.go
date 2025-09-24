@@ -87,14 +87,14 @@ func (h *HiveAuth) Authenticate(ctx context.Context, headers map[string][]string
 	if !ok || len(auth) == 0 {
 		return ctx, errors.New("missing or empty authorization header")
 	}
-	
+
 	token := auth[0]
 	expectedToken := h.authorizationValue()
-	
+
 	if subtle.ConstantTimeCompare([]byte(expectedToken), []byte(token)) == 1 {
 		return ctx, nil
 	}
-	
+
 	return ctx, fmt.Errorf("invalid Hive API token")
 }
 

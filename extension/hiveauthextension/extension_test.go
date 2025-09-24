@@ -18,10 +18,10 @@ func TestHiveAuth_AuthorizationValue(t *testing.T) {
 		APIToken: "test-token",
 		Endpoint: "https://app.graphql-hive.com/graphql",
 	}
-	
+
 	auth := newHiveAuth(cfg, zap.NewNop())
 	authValue := auth.authorizationValue()
-	
+
 	assert.Equal(t, "Bearer test-token", authValue)
 }
 
@@ -30,16 +30,16 @@ func TestHiveAuth_PerRPCCredentials(t *testing.T) {
 		APIToken: "test-token",
 		Endpoint: "https://app.graphql-hive.com/graphql",
 	}
-	
+
 	auth := newHiveAuth(cfg, zap.NewNop())
 	creds, err := auth.PerRPCCredentials()
-	
+
 	require.NoError(t, err)
 	assert.NotNil(t, creds)
-	
+
 	// Test RequireTransportSecurity
 	assert.True(t, creds.RequireTransportSecurity())
-	
+
 	// Test GetRequestMetadata
 	metadata, err := creds.GetRequestMetadata(context.Background())
 	require.NoError(t, err)
@@ -51,14 +51,14 @@ func TestHiveAuth_RoundTripper(t *testing.T) {
 		APIToken: "test-token",
 		Endpoint: "https://app.graphql-hive.com/graphql",
 	}
-	
+
 	auth := newHiveAuth(cfg, zap.NewNop())
 	base := http.DefaultTransport
-	
+
 	rt, err := auth.RoundTripper(base)
 	require.NoError(t, err)
 	assert.NotNil(t, rt)
-	
+
 	// Test that it's the correct type
 	_, ok := rt.(*HiveAuthRoundTripper)
 	assert.True(t, ok)
@@ -69,10 +69,10 @@ func TestHiveAuth_Authenticate(t *testing.T) {
 		APIToken: "test-token",
 		Endpoint: "https://app.graphql-hive.com/graphql",
 	}
-	
+
 	auth := newHiveAuth(cfg, zap.NewNop())
 	ctx := context.Background()
-	
+
 	tests := []struct {
 		name        string
 		headers     map[string][]string
@@ -112,7 +112,7 @@ func TestHiveAuth_Authenticate(t *testing.T) {
 			expectError: true,
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			resultCtx, err := auth.Authenticate(ctx, tt.headers)

@@ -23,9 +23,9 @@ type Config struct {
 }
 
 var (
-	_                       component.Config = (*Config)(nil)
-	errNoAPITokenProvided                    = errors.New("no API token provided")
-	errNoEndpointProvided                    = errors.New("no endpoint provided")
+	_                     component.Config = (*Config)(nil)
+	errNoAPITokenProvided                  = errors.New("no API token provided")
+	errNoEndpointProvided                  = errors.New("no endpoint provided")
 )
 
 // Validate checks if the extension configuration is valid
