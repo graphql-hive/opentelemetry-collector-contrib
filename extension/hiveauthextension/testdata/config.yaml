@@ -1,0 +1,3 @@
+hiveauth:
+  api_token: test-token
+  endpoint: https://app.graphql-hive.com/graphql
