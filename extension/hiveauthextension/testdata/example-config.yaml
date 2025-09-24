@@ -1,0 +1,42 @@
+# Example OpenTelemetry Collector configuration using hiveauthextension
+extensions:
+  hiveauth:
+    api_token: "your-hive-api-token-here"
+    endpoint: "https://app.graphql-hive.com/graphql"
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+
+exporters:
+  logging:
+    loglevel: debug
+  
+  # Example: Send usage data to Hive using the hiveauth extension
+  otlphttp:
+    endpoint: "https://app.graphql-hive.com/usage"
+    auth:
+      authenticator: hiveauth
+
+service:
+  extensions: [hiveauth]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, otlphttp]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, otlphttp]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [logging, otlphttp]
